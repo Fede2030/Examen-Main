@@ -5,103 +5,120 @@
           Implementación de LStack
 --------------------------------------------------*/
 
-LStack::LStack() {
-    topNode = nullptr;  // Inicializar el nodo superior como nulo al crear una nueva pila
+template <typename T>
+LStack<T>::LStack() {
+    topNode = nullptr; // Inicializa el puntero superior de la pila como nulo
 }
 
-LStack::~LStack() {
+template <typename T>
+LStack<T>::~LStack() {
     while (!IsEmpty()) {
-        Pop();  // Eliminar todos los nodos de la pila al destruirla
+        Pop(); // Elimina todos los elementos de la pila al liberar la memoria
     }
 }
 
-void LStack::Push(int value) {
-    Node* newNode = new Node;  // Crear un nuevo nodo
-    newNode->value = value;  // Asignar el valor proporcionado al nuevo nodo
-    newNode->next = topNode;  // Establecer el siguiente nodo como el nodo superior actual
-    topNode = newNode;  // Actualizar el nodo superior para que sea el nuevo nodo
+template <typename T>
+void LStack<T>::Push(const T& value) {
+    Node* newNode = new Node; // Crea un nuevo nodo en el montón
+    newNode->value = value; // Asigna el valor al nuevo nodo
+    newNode->next = topNode; // Establece el siguiente del nuevo nodo como el antiguo nodo superior
+    topNode = newNode; // Establece el nuevo nodo como el nuevo nodo superior
 }
 
-void LStack::Pop() {
+template <typename T>
+void LStack<T>::Pop() {
     if (!IsEmpty()) {
-        Node* temp = topNode;  // Mantener una referencia al nodo superior actual
-        topNode = topNode->next;  // Actualizar el nodo superior para que sea el siguiente nodo
-        delete temp;  // Eliminar el nodo anterior del nodo superior
+        Node* temp = topNode; // Crea un puntero temporal al nodo superior
+        topNode = topNode->next; // Establece el siguiente nodo como el nuevo nodo superior
+        delete temp; // Libera la memoria del nodo superior anterior
     }
 }
 
-int LStack::Top() {
+template <typename T>
+T LStack<T>::Top() {
     if (!IsEmpty()) {
-        return topNode->value;  // Devolver el valor del nodo superior actual
+        return topNode->value; // Devuelve el valor del nodo superior
     }
-    return -1;  // o cualquier otro valor de error apropiado cuando la pila esté vacía
+    // o cualquier valor de error apropiado cuando la pila está vacía
+    throw std::runtime_error("Stack is empty");
 }
 
-bool LStack::IsEmpty() {
-    return (topNode == nullptr);  // Verificar si la pila está vacía comparando el nodo superior con nulo
+template <typename T>
+bool LStack<T>::IsEmpty() {
+    return (topNode == nullptr); // Comprueba si la pila está vacía verificando si el nodo superior es nulo
 }
 
 /* -----------------------------------------------
           Implementación de LQueue
 --------------------------------------------------*/
 
-LQueue::LQueue() {
-    frontNode = nullptr;  // Inicializar el nodo frontal y el nodo posterior como nulos al crear una nueva cola
-    backNode = nullptr;
+template <typename T>
+LQueue<T>::LQueue() {
+    frontNode = nullptr; // Inicializa el puntero frontal de la cola como nulo
+    backNode = nullptr; // Inicializa el puntero posterior de la cola como nulo
 }
 
-LQueue::~LQueue() {
+template <typename T>
+LQueue<T>::~LQueue() {
     while (!IsEmpty()) {
-        Dequeue();  // Eliminar todos los nodos de la cola al destruirla
+        Dequeue(); // Elimina todos los elementos de la cola al liberar la memoria
     }
 }
 
-void LQueue::Enqueue(const std::string& value) {
-    Node* newNode = new Node;  // Crear un nuevo nodo
-    newNode->value = value;  // Asignar el valor proporcionado al nuevo nodo
-    newNode->next = nullptr;  // Establecer el siguiente nodo como nulo
+template <typename T>
+void LQueue<T>::Enqueue(const T& value) {
+    Node* newNode = new Node; // Crea un nuevo nodo en el montón
+    newNode->value = value; // Asigna el valor al nuevo nodo
+    newNode->next = nullptr; // Establece el siguiente del nuevo nodo como nulo
 
     if (IsEmpty()) {
-        frontNode = newNode;  // Si la cola está vacía, tanto el nodo frontal como el nodo posterior apuntan al nuevo nodo
+        frontNode = newNode; // Si la cola está vacía, el nuevo nodo se convierte en el nodo frontal y posterior
         backNode = newNode;
     }
     else {
-        backNode->next = newNode;  // Enlazar el nuevo nodo al nodo posterior existente
-        backNode = newNode;  // Actualizar el nodo posterior para que sea el nuevo nodo
+        backNode->next = newNode; // Establece el siguiente del nodo posterior actual como el nuevo nodo
+        backNode = newNode; // Establece el nuevo nodo como el nuevo nodo posterior
     }
 }
 
-void LQueue::Dequeue() {
+template <typename T>
+void LQueue<T>::Dequeue() {
     if (!IsEmpty()) {
-        Node* temp = frontNode;  // Mantener una referencia al nodo frontal actual
-        frontNode = frontNode->next;  // Actualizar el nodo frontal para que sea el siguiente nodo
+        Node* temp = frontNode; // Crea un puntero temporal al nodo frontal
+        frontNode = frontNode->next; // Establece el siguiente nodo como el nuevo nodo frontal
         if (frontNode == nullptr) {
-            backNode = nullptr;  // Si después de eliminar el nodo frontal la cola queda vacía, también se actualiza el nodo posterior como nulo
+            backNode = nullptr; // Si el nodo frontal es nulo, la cola está vacía y el nodo posterior también debe ser nulo
         }
-        delete temp;  // Eliminar el nodo frontal anterior
+        delete temp; // Libera la memoria del nodo frontal anterior
     }
 }
 
-std::string LQueue::Front() {
+template <typename T>
+T LQueue<T>::Front() {
     if (!IsEmpty()) {
-        return frontNode->value;  // Devolver el valor del nodo frontal actual
+        return frontNode->value; // Devuelve el valor del nodo frontal
     }
-    return "";  // o cualquier otro valor de error apropiado cuando la cola esté vacía
+    // o cualquier valor de error apropiado cuando la cola está vacía
+    throw std::runtime_error("Queue is empty");
 }
 
-std::string LQueue::Back() {
+template <typename T>
+T LQueue<T>::Back() {
     if (!IsEmpty()) {
-        return backNode->value;  // Devolver el valor del nodo posterior actual
+        return backNode->value; // Devuelve el valor del nodo posterior
     }
-    return "";  // o cualquier otro valor de error apropiado cuando la cola esté vacía
+    // o cualquier valor de error apropiado cuando la cola está vacía
+    throw std::runtime_error("Queue is empty");
 }
 
-bool LQueue::IsEmpty() {
-    return (frontNode == nullptr);  // Verificar si la cola está vacía comparando el nodo frontal con nulo
+template <typename T>
+bool LQueue<T>::IsEmpty() {
+    return (frontNode == nullptr); // Comprueba si la cola está vacía verificando si el nodo frontal es nulo
 }
 
-LQueue::Node* LQueue::GetFrontNode() {
-    return frontNode;  // Obtener el nodo frontal actual
+template <typename T>
+typename LQueue<T>::Node* LQueue<T>::GetFrontNode() {
+    return frontNode; // Devuelve un puntero al nodo frontal de la cola
 }
 
 /* -----------------------------------------------
@@ -109,21 +126,26 @@ LQueue::Node* LQueue::GetFrontNode() {
 --------------------------------------------------*/
 
 Triage::Triage() {
-    queues = new LQueue[5];  // Crear un array de colas con 5 niveles de urgencia
+    queues = new LQueue<Patient*>[5]; // Crea un arreglo de 5 colas para diferentes niveles de urgencia
 }
 
 Triage::~Triage() {
-    delete[] queues;  // Liberar la memoria asignada para el array de colas al destruir el objeto Triage
+    delete[] queues; // Libera la memoria del arreglo de colas
 }
 
 void Triage::AddPatient(int urgency, const std::string& patient_name) {
-    queues[urgency - 1].Enqueue(patient_name);  // Agregar un paciente a la cola correspondiente según su nivel de urgencia
+    Patient* newPatient = new Patient; // Crea un nuevo paciente en el montón
+    newPatient->name = patient_name; // Asigna el nombre del paciente
+    newPatient->urgency = urgency; // Asigna el nivel de urgencia del paciente
+    newPatient->next = nullptr; // Establece el siguiente del nuevo paciente como nulo
+
+    queues[urgency - 1].Enqueue(newPatient); // Agrega el paciente a la cola correspondiente al nivel de urgencia
 }
 
 void Triage::PassPatient() {
     for (int i = 0; i < 5; i++) {
         if (!queues[i].IsEmpty()) {
-            queues[i].Dequeue();  // Pasar al siguiente paciente eliminando al paciente actual en la cola de mayor urgencia no vacía
+            queues[i].Dequeue(); // Elimina al paciente del frente de la cola más prioritaria (menor nivel de urgencia) y sale del bucle
             break;
         }
     }
@@ -134,25 +156,30 @@ void Triage::Print() {
         std::cout << i + 1 << "-> ";
 
         if (!queues[i].IsEmpty()) {
-            LQueue::Node* current = queues[i].GetFrontNode();  // Obtener el nodo frontal de la cola actual
+            LQueue<Patient*>::Node* current = queues[i].GetFrontNode();
 
             while (current != nullptr) {
-                std::cout << current->value;
+                std::cout << current->value->name; // Imprime el nombre del paciente
 
                 if (current->next != nullptr) {
                     std::cout << ", ";
                 }
 
-                current = current->next;  // Mover al siguiente nodo
+                current = current->next;
             }
         }
         else {
-            std::cout << "No hay pacientes";
+            std::cout << "No hay pacientes"; // Mensaje cuando no hay pacientes en la cola actual
         }
 
         std::cout << std::endl;
     }
 }
+
+
+
+
+
 
 
 

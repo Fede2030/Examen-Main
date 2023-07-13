@@ -3,72 +3,71 @@
 
 #include <string>
 
+template <typename T>
 class LStack {
 private:
     struct Node {
-        int value;
-        Node* next;
+        T value;        // Valor almacenado en el nodo
+        Node* next;     // Puntero al siguiente nodo en la pila
     };
 
-    Node* topNode;  // Puntero al nodo superior de la pila
+    Node* topNode;      // Puntero al nodo superior de la pila
 
 public:
-    LStack();  // Constructor de la clase LStack
-    ~LStack();  // Destructor de la clase LStack
+    LStack();           // Constructor de la pila
+    ~LStack();          // Destructor de la pila
 
-    void Push(int value);  // Agrega un elemento a la pila
-    void Pop();  // Elimina el elemento superior de la pila
-    int Top();  // Retorna el valor del elemento superior de la pila
-    bool IsEmpty();  // Verifica si la pila está vacía
+    void Push(const T& value);  // Inserta un elemento en la parte superior de la pila
+    void Pop();                 // Elimina el elemento en la parte superior de la pila
+    T Top();                    // Devuelve el valor del elemento en la parte superior de la pila
+    bool IsEmpty();             // Verifica si la pila está vacía
 };
 
+template <typename T>
 class LQueue {
 public:
     struct Node {
-        std::string value;
-        Node* next = nullptr; // Inicialización de la variable miembro "next" a nullptr
+        T value;            // Valor almacenado en el nodo
+        Node* next = nullptr;   // Puntero al siguiente nodo en la cola (inicializado a nullptr)
     };
 
 private:
-    Node* frontNode;  // Puntero al nodo frontal de la cola
-    Node* backNode;  // Puntero al nodo final de la cola
+    Node* frontNode;       // Puntero al nodo frontal de la cola
+    Node* backNode;        // Puntero al nodo posterior de la cola
 
 public:
-    LQueue();  // Constructor de la clase LQueue
-    ~LQueue();  // Destructor de la clase LQueue
+    LQueue();              // Constructor de la cola
+    ~LQueue();             // Destructor de la cola
 
-    void Enqueue(const std::string& value);  // Agrega un elemento al final de la cola
-    void Dequeue();  // Elimina el elemento frontal de la cola
-    std::string Front();  // Retorna el valor del elemento frontal de la cola
-    std::string Back();  // Retorna el valor del elemento final de la cola
-    bool IsEmpty();  // Verifica si la cola está vacía
+    void Enqueue(const T& value);   // Inserta un elemento al final de la cola
+    void Dequeue();                 // Elimina el elemento del frente de la cola
+    T Front();                      // Devuelve el valor del elemento en el frente de la cola
+    T Back();                       // Devuelve el valor del elemento en la parte posterior de la cola
+    bool IsEmpty();                  // Verifica si la cola está vacía
 
-    Node* GetFrontNode();  // Obtiene el puntero al nodo frontal de la cola
+    Node* GetFrontNode();    // Devuelve un puntero al nodo frontal de la cola
 };
 
 class Triage {
 private:
     struct Patient {
-        std::string name;
-        int urgency;
-        Patient* next;
+        std::string name;       // Nombre del paciente
+        int urgency;            // Nivel de urgencia del paciente
+        Patient* next;          // Puntero al siguiente paciente en la lista
     };
 
-    LQueue* queues;  // Arreglo de colas para cada nivel de urgencia
+    LQueue<Patient*>* queues;   // Colas de pacientes organizadas por nivel de urgencia
 
 public:
-    Triage();  // Constructor de la clase Triage
-    ~Triage();  // Destructor de la clase Triage
+    Triage();                    // Constructor del sistema de triaje
+    ~Triage();                   // Destructor del sistema de triaje
 
-    void AddPatient(int urgency, const std::string& patient_name);  // Agrega un paciente al triage
-    void PassPatient();  // Atiende al siguiente paciente según las reglas del triage
-    void Print();  // Imprime la lista de pacientes en cada nivel de urgencia
+    void AddPatient(int urgency, const std::string& patient_name);    // Agrega un paciente al sistema de triaje
+    void PassPatient();          // Pasa al siguiente paciente en el sistema de triaje
+    void Print();                // Imprime el estado actual del sistema de triaje
 };
 
 #endif
-
-
-
 
 
 
